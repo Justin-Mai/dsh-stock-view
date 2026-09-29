@@ -1,0 +1,59 @@
+{
+  "name": "dsh-stock-view",
+  "version": "1.0.0",
+  "description": "行情盯盘插件 - DeepSeek Harness 网页界面右上角可折叠弹窗，同时盯 A股 / ETF / 港股 / 美股 / 加密货币：分时、日周月K、买卖目标价、分组管理（拖动排序/删除/重命名）、暗亮主题、可拖动吸附。改造自 dsh-stock-watch：移除扇形菜单三项提示词入口，新增美股（东方财富）与加密货币（OKX 现货）。",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "crypto.js",
+    "usstock.js",
+    "client.js",
+    "cordis.patch.yml",
+    "README.md",
+    "data",
+    "tools",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Justin-Mai/dsh-stock-view.git"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": []
+    }
+  },
+  "keywords": [
+    "dsh",
+    "deepseek",
+    "deepseek-harness",
+    "plugin",
+    "dsh-plugin",
+    "stock",
+    "a-share",
+    "hk-stock",
+    "us-stock",
+    "etf",
+    "crypto",
+    "okx",
+    "eastmoney",
+    "行情",
+    "盯盘",
+    "加密货币",
+    "美股"
+  ],
+  "license": "MIT"
+}

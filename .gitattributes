@@ -1,0 +1,12 @@
+# 统一换行符：仓库与工作区都固定 LF。
+# 不加这个，Windows 上（core.autocrlf=true）每次编辑提交都会产生整文件的 CRLF 变更噪音。
+* text=auto eol=lf
+
+# 二进制（本包目前没有，留作约定）
+*.png binary
+*.jpg binary
+*.ico binary
+*.tgz binary
+
+# 让 GitHub 语言统计把 data/ 的 JSON 和 client.js 正确归类
+data/*.json linguist-language=JSON

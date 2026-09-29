@@ -1,0 +1,36 @@
+MIT License
+
+Copyright (c) 2026 Awu12277 — original work (dsh-stock-watch)
+Copyright (c) 2026 Justin-Mai — fork modifications (dsh-stock-view)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+Provenance notes:
+
+* This package is a fork of https://github.com/Awu12277/dsh-stock-watch (MIT).
+  The Tencent quote parsing, K-line column order, intraday previous-close
+  derivation and the panel UI originate there.
+* This package ships NO third-party skill or asset. The upstream release bundled
+  two skills (Anthropic's "frontend-design" and the "investment-research" skill)
+  and injected them into ~/.agents/skills on first run; both the files and that
+  behaviour were removed here, so nothing but the original code is redistributed.
+* data/ contains plain A-share / ETF / Hong Kong code-and-name lists used for
+  offline symbol search. Quote data itself is fetched live and never bundled.

@@ -1,0 +1,11 @@
+# dsh-stock-view bundle patch.
+# Registers the node-side plugin entry; the client half is picked up
+# automatically from dsh.client in package.json by dsh-client-modules.
+#
+# Forked from dsh-stock-watch v1.1.0 (MIT, Awu12277):
+#   - the hover fan menu (行情分析 / 每日复盘 / 涨停分析) and its host-side prompt
+#     injection were removed
+#   - cryptocurrency monitoring (OKX spot) was added
+- insert:
+    - id: dsh-stock-view
+      name: dsh-stock-view
