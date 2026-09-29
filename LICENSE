@@ -19,17 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
----
-
-Provenance notes:
-
-* This package is a fork of https://github.com/Awu12277/dsh-stock-watch (MIT).
-  The Tencent quote parsing, K-line column order, intraday previous-close
-  derivation and the panel UI originate there.
-* This package ships NO third-party skill or asset. The upstream release bundled
-  two skills (Anthropic's "frontend-design" and the "investment-research" skill)
-  and injected them into ~/.agents/skills on first run; both the files and that
-  behaviour were removed here, so nothing but the original code is redistributed.
-* data/ contains plain A-share / ETF / Hong Kong code-and-name lists used for
-  offline symbol search. Quote data itself is fetched live and never bundled.
