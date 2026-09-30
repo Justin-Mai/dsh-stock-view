@@ -49,7 +49,7 @@ window.__ModuleLoader__.load({
 /* 分组快速切换：分组多时 tab 会横向滚动，用它一眼看全并直达 */
 .sk-group-btn{flex:none;padding:2px 7px;border-radius:999px;border:1px solid var(--sk-border);background:transparent;color:var(--sk-muted);cursor:pointer;font:inherit;white-space:nowrap}
 .sk-group-btn:hover{color:var(--sk-text);border-color:var(--sk-cyan-border)}
-.sk-group-menu{position:fixed;z-index:10001;min-width:190px;max-height:min(300px,60vh);overflow-y:auto;padding:4px;border-radius:10px;background:var(--sk-panel-bg);border:1px solid var(--sk-border);box-shadow:var(--sk-shadow);backdrop-filter:blur(10px)}
+.sk-group-menu{position:fixed;z-index:10001;min-width:190px;max-width:260px;max-height:340px;overflow-y:auto;padding:4px;border-radius:10px;background:var(--sk-panel-bg);border:1px solid var(--sk-border);box-shadow:var(--sk-shadow);backdrop-filter:blur(10px)}
 .sk-group-menu-row{display:flex;align-items:center;gap:6px;width:100%;padding:4px 6px;border-radius:6px;background:transparent;color:var(--sk-text);cursor:pointer;font:inherit;text-align:left;border-top:2px solid transparent;border-bottom:2px solid transparent}
 .sk-group-menu-row:hover{background:var(--sk-hover)}
 .sk-group-menu-item-active{background:var(--sk-cyan-soft);color:var(--sk-cyan)}
@@ -1119,7 +1119,7 @@ window.__ModuleLoader__.load({
       const [dragOver, setDragOver] = useState(null); // { index, after }
       const [showGroups, setShowGroups] = useState(false);
       const groupBtnRef = useRef(null);
-      const [groupMenuPos, setGroupMenuPos] = useState({ top: 52, right: 16 });
+      const [groupMenuPos, setGroupMenuPos] = useState({ top: 46, right: 16, maxHeight: 300 });
       /** 把 from 位置的分组移到 to（插入下标），并保持当前选中的分组不变 */
       const reorderGroup = useCallback((from, to) => {
         const list = Array.isArray(groupsCfg) ? groupsCfg : [];
@@ -1387,19 +1387,32 @@ window.__ModuleLoader__.load({
         onClick: (e) => {
           e.stopPropagation();
           if (showGroups) { setShowGroups(false); return; }
-          // 面板有 overflow:hidden，绝对定位会被裁掉 → 用 fixed + 按钮实际位置
-          const r = groupBtnRef.current ? groupBtnRef.current.getBoundingClientRect() : null;
-          setGroupMenuPos(r
-            ? { top: Math.round(r.bottom + 4), right: Math.max(8, Math.round(window.innerWidth - r.right)) }
-            : { top: 52, right: 16 });
+          // ⚠️ 坐标必须是「相对面板」的：.sk-panel 带 backdrop-filter，
+          // 它会让面板成为 position:fixed 后代的包含块。若按视口坐标算，
+          // 面板自身的偏移会被再叠加一次 → 弹窗整体偏下，并可能被面板底边裁掉。
+          const btn = groupBtnRef.current;
+          const panel = btn && btn.closest ? btn.closest(".sk-panel") : null;
+          const br = btn ? btn.getBoundingClientRect() : null;
+          const pr = panel ? panel.getBoundingClientRect() : null;
+          if (br && pr && pr.width > 0) {
+            const MENU_W = 190; // 与 .sk-group-menu 的 min-width 保持一致
+            const top = Math.round(br.bottom - pr.top + 6);
+            // 右对齐到按钮，再夹进面板：面板窄时不会向左出界
+            const right = Math.round(Math.max(8, Math.min(pr.right - br.right, pr.width - MENU_W - 8)));
+            // 高度上限留出面板底边 8px，保证不被 overflow:hidden 裁掉
+            const maxHeight = Math.max(120, Math.round(pr.height - top - 8));
+            setGroupMenuPos({ top, right, maxHeight });
+          } else {
+            setGroupMenuPos({ top: 46, right: 16, maxHeight: 300 });
+          }
           setShowGroups(true);
         },
         title: "切换分组（共 " + (Array.isArray(groupsCfg) ? groupsCfg.length : 0) + " 个）—— 可拖动排序、可删除、双击重命名",
-      }, "切换分组");
+      }, "切换");
 
       const groupMenu = showGroups ? react.createElement("div", {
         className: "sk-group-menu sk-theme-" + theme,
-        style: { top: groupMenuPos.top, right: groupMenuPos.right },
+        style: { top: groupMenuPos.top, right: groupMenuPos.right, maxHeight: groupMenuPos.maxHeight },
         onMouseDown: (e) => e.stopPropagation(),
         onMouseLeave: () => setShowGroups(false),
       },
