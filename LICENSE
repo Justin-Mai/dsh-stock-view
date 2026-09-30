@@ -1,6 +1,7 @@
 MIT License
 
-Copyright (c) 2026 Justin-Mai
+Copyright (c) 2026 Awu12277 — original work (dsh-stock-watch)
+Copyright (c) 2026 Justin-Mai — fork modifications (dsh-stock-view)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,3 +20,48 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+---
+
+Provenance notes
+
+This package is a fork. Both copyright notices above are required: the first
+covers the work this fork derives from, the second the modifications made here.
+
+Upstream — https://github.com/Awu12277/dsh-stock-watch (MIT, v1.1.0)
+Carried over unchanged or lightly adapted:
+
+  * Tencent quote parsing: the minute/snapshot response layout, the 35+ field
+    `qt` array indices, and the intraday previous-close derivation
+    (price / (1 + changePercent / 100)).
+  * K-line retrieval, the [date, open, close, high, low, volume] column order,
+    and the column-order self-correction safeguard.
+  * The panel UI: pill/dock behaviour, panel drag and resize, search box,
+    intraday and K-line views, MA overlays, buy/sell target prices, light/dark
+    themes, the localStorage config shape, and the first-run migration from
+    ~/.stocking/settings.json.
+
+Added or changed here:
+
+  * Removed the pill's hover fan menu and its host-side prompt injection
+    (行情分析 / 每日复盘 / 涨停分析), including the .sk-fan* styling, the GSAP
+    loader, the fan geometry helper and the FAN_PROMPTS systemPrompt section.
+  * Added cryptocurrency monitoring (crypto.js) over the OKX spot public REST
+    API, keyed as cr:<instId>.
+  * Added US stock quotes (usstock.js) via Eastmoney, keyed as us<TICKER>.
+    Tencent's US endpoints proved incomplete: the intraday call returns a single
+    point and the daily K-line returns only the first and last bar.
+  * Reworked group navigation: two pinned group chips in a single-row header,
+    plus a group manager dropdown with switch, drag-to-reorder, delete, rename.
+  * Repointed the intraday endpoint to a working mirror; the original
+    web.ifzq.gtimg.cn/appstock/app/minute/query is now WAF-blocked (HTTP 501).
+
+Not redistributed:
+
+  * No third-party skill or asset ships with this package. The upstream release
+    bundled two skills (Anthropic's "frontend-design", and the
+    "investment-research" skill) and copied them into ~/.agents/skills on first
+    run; both the files and that behaviour were removed here. The 一键分析 button
+    expects those skills to be installed separately; the plugin runs without them.
+  * data/ contains plain A-share / ETF / Hong Kong code-and-name lists used for
+    offline symbol search. Quote data is fetched live and never bundled.
