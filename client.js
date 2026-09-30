@@ -44,7 +44,6 @@ window.__ModuleLoader__.load({
 .sk-pin:hover{color:var(--sk-text);border-color:var(--sk-cyan-border)}
 .sk-pin-active{background:var(--sk-cyan-soft);color:var(--sk-cyan);border-color:var(--sk-cyan-border);font-weight:600}
 .sk-pin-hint{color:var(--sk-muted);font-size:11px}
-.sk-cur-hint{flex:0 1 auto;min-width:0;max-width:32%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--sk-muted);font-size:11px}
 .sk-spacer{flex:1 1 auto;min-width:0}
 /* 分组快速切换：分组多时 tab 会横向滚动，用它一眼看全并直达 */
 .sk-group-btn{flex:none;padding:2px 7px;border-radius:999px;border:1px solid var(--sk-border);background:transparent;color:var(--sk-muted);cursor:pointer;font:inherit;white-space:nowrap}
@@ -1376,10 +1375,7 @@ window.__ModuleLoader__.load({
           resizeHandles);
       }
 
-      // 当前分组名（表头稳定显示这一个）
-      const curGroupName = (Array.isArray(groupsCfg) && groupsCfg[groupIndex] && groupsCfg[groupIndex].name) || "";
-
-      // 切换分组按钮（表头右侧）：下拉即分组管理器
+      // 切换按钮（表头右侧）：下拉即分组管理器
       const groupBtn = react.createElement("button", {
         className: "sk-group-btn",
         ref: groupBtnRef,
@@ -1473,11 +1469,10 @@ window.__ModuleLoader__.load({
 
       // 常驻分组 = 分组列表的前两个（固定钉住，不随当前分组变化）
       const pinnedGroups = (Array.isArray(groupsCfg) ? groupsCfg : []).slice(0, 2);
-      const curIsPinned = groupIndex < pinnedGroups.length;
 
       // —— 列表视图 ——
-      // 单行表头：标题 + 常驻前两个分组 + 当前提示 + 切换入口 + 动作图标。
-      // 宽度紧张时，可压缩的是「钉住标签 → 当前提示 → 留白」这一段，右侧动作图标固定不被挤。
+      // 单行表头：标题 + 常驻前两个分组 + 切换入口 + 动作图标。
+      // 宽度紧张时，可压缩的是「钉住标签 → 留白」这一段，右侧动作图标固定不被挤。
       const header = react.createElement("div", { className: "sk-header", onMouseDown: (e) => startDrag(e, "panel"), title: "按住此处可拖动面板" },
         react.createElement("span", { className: "sk-title" }, "📈 行情盯盘"),
         pinnedGroups.length === 0
@@ -1489,9 +1484,6 @@ window.__ModuleLoader__.load({
               onClick: () => setGroupIndex(k),
               title: "常驻分组「" + g.name + "」— 点击切换",
             }, g.name)),
-        (!curIsPinned && curGroupName)
-          ? react.createElement("span", { className: "sk-cur-hint", title: "当前分组：" + curGroupName }, "当前：" + curGroupName)
-          : null,
         react.createElement("span", { className: "sk-spacer" }),
         groupBtn,
         react.createElement("span", { className: "sk-right" },
